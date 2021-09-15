@@ -1,5 +1,5 @@
 PROGS = 1-blink.bin 2-blink.bin 3-input.bin
-OBJS = start.o 1-blink.o gpio.o
+OBJS = start.o gpio.o 1-blink.o 2-blink.o 3-input.o
 
 ARM = arm-none-eabi
 CC = $(ARM)-gcc

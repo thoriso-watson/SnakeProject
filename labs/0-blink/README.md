@@ -268,14 +268,14 @@ Mechanically:
   3. Hook the TX and RX wires up to the pi.  Do you TX/TX and RX/RX or
      switch them?  (Hint: Think about the semantics of TX (transmit)
      and RX (receive).)
-  4. Copy `bin/pi-install.linux` or `bin/pi-install.macos` to your
+  4. Copy `bin/pi-install.linux` or `bin/pi-install.*.macos` (`arm` or `x86_64`) to your
      local `bin/pi-install`.  Make sure when you type `pi-install`
      something happens!  If not, make sure your local `~/bin/` directory
      is in your path, and that you have sourced your shell startup file.
 
      On `tcsh` on my linux machine, after plugging the pi back in:
 
-            % cp ../../bin/pi-install.unix ~/bin/pi-install
+            % cp ../../bin/pi-install.linux ~/bin/pi-install
             % rehash  # so the shell refreshes its cache 
             % pi-install part1/blink-pin20.bin
             # the pi is now blinking.
