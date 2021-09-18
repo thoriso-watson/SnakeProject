@@ -7,23 +7,24 @@ installing.
 
 * `fd`: for finding files. Usage: `fd FILE`, recursively searches for files
   with the given name in the current directory. Also useful: `fd -g FILE` to
-  search with globs.
+  search with globs. [Project page](https://github.com/sharkdp/fd).
 
 * `exa`: a better version of `ls`. Reduces the clutter and displays
   human-readable file sizes. Drop-in replacement (mostly), so I just
-  `alias ls=exa` in my `.bashrc`.
+  `alias ls=exa` in my `.bashrc`. [Project page](https://github.com/ogham/exa).
 
 * `rg`: for searching for strings within files. Usage: `rg PATTERN`,
   recursively searches all files starting from the current directory for the
-  given pattern.
+  given pattern. [Project page](https://github.com/BurntSushi/ripgrep).
 
-* `ag`: alternative to `rg`, does the same thing.
+* `ag`: alternative to `rg`, does the same thing. [Project page](https://github.com/ggreer/the_silver_searcher).
 
 * `clang-format`: automatically formats C code. Usage: run `clang-format -i
   *.c` to autoformat in-place all the C files in the current directory. I don't
-  like the default formatting, so I customize it by creating a `.clang-format` file
-  in the current directory that contains `{BasedOnStyle: Chromium, IndentWidth:
-  4, SpaceAfterCStyleCast: true}` (this is my preferred style).
+  like the default formatting, so I customize it by creating a `.clang-format`
+  file in the current directory that contains `{BasedOnStyle: Chromium,
+  IndentWidth: 4, SpaceAfterCStyleCast: true}` (this is my preferred style).
+  Install using `sudo apt install clang-format` or `brew install clang-format`.
 
 ## `cd -`
 
@@ -91,7 +92,7 @@ can try to automatically detect this, but it's easier to just know it and
 hardcode it):
 
 ```
-export MAKEFLAGS="-jN"
+export MAKEFLAGS="-jN" # replace N with your core count
 ```
 
 ## Clipboard
