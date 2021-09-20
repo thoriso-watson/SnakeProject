@@ -1,4 +1,4 @@
-// part 1: uses your GPIO code to blink two LEDs where if one is off, the 
+// part 1: uses your GPIO code to blink two LEDs where if one is off, the
 // other is on.
 #include "rpi.h"
 
@@ -8,7 +8,7 @@ void notmain(void) {
     gpio_set_output(led1);
     gpio_set_output(led2);
 
-    for(int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
         gpio_set_on(led1);
         gpio_set_off(led2);
         delay(3000000);

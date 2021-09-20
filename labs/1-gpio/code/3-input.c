@@ -8,10 +8,10 @@ void notmain(void) {
 
     gpio_set_output(led);
     gpio_set_input(input);
-    while(1) { 
-        // could also do: 
+    while (1) {
+        // could also do:
         //  gpio_write(input, gpio_read(led));
-        if(gpio_read(input))
+        if (gpio_read(input))
             gpio_set_on(led);
         else
             gpio_set_off(led);
