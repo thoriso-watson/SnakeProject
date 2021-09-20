@@ -13,7 +13,7 @@ Type     |           Size (64 bit) |  Alignment (64 bit)  |    Size (32 bit)  | 
 `short`          |       2        |          2          |          2         |        2               |
 `int`            |       4        |          4          |          4         |        4               |
 `long`           |       8        |          8          |          4         |        4               |
-`long long`      |       8                   8          |          8         |        8               |
+`long long`      |       8        |          8          |          8         |        8               |
 
 # Pointers
 
@@ -79,7 +79,7 @@ should first cast the pointer to a `char*`, which ensures that `sizeof(T) ==
 the address by 1, but this is not guaranteed by the C spec.
 
 In fact, for an array `T x[N]`, for `0 <= i <= N`, `&x[i] == x + i`. It is
-illegal to form a pointer that points outside an object (not just dereference,
+illegal to form a pointer that points outside the object (not just dereference,
 but *form*). In this case that would be `x + i` where `i < 0` or `i > N`. Note
 that forming the pointer `x + N` is legal, but dereferencing is not.
 
@@ -180,8 +180,8 @@ i |= 0xfff << n
 
 # Sources
 
-https://cs61.seas.harvard.edu/wiki/2017/Patterns
-https://cs61.seas.harvard.edu/wiki/2017/Datarep2
-https://cs61.seas.harvard.edu/wiki/2017/Section1
-https://pdos.csail.mit.edu/6.828/2014/readings/pointers.pdf
+* https://cs61.seas.harvard.edu/wiki/2017/Patterns
+* https://cs61.seas.harvard.edu/wiki/2017/Datarep2
+* https://cs61.seas.harvard.edu/wiki/2017/Section1
+* https://pdos.csail.mit.edu/6.828/2014/readings/pointers.pdf
 
