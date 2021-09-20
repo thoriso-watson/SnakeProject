@@ -27,15 +27,10 @@ We'll use different variations of a blinky light using GPIO pin 20
 
 The final sign off for the lab:
 
-  1. Show you have a working `blink` compiled using the tool chain and started
+  - Show you have a working `blink` compiled using the tool chain and started
      using the bootloader.
 
-  2. Show that you can run two pi's at the same time.  Not everyone will
-     be able to do this if you need to buy additional adaptors for your
-     laptop --- make sure you can do this part very soon, since we need
-     two pi's at once for networking.
-
-  3. Bonus: write up a short example problem you ran into (or someone
+  - Bonus: write up a short example problem you ran into (or someone
      you helped ran into) and how you solved them and post to the
      newsgroup so we can start accumulating examples.
 

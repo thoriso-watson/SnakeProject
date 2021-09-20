@@ -1,7 +1,7 @@
 ### Pre-lab for 0-blink
 
-Read through the below and do any action item before our first lab pi lab
-(Thursday).  Since this is the first lab and people are missing context,
+Read through the below and do any action item before our first lab
+pi lab.  Since this is the first lab and people are missing context,
 we over-explain --- the other labs will be more succinct.
 
 For this lab, we'll use different variations of a blinky light to check
@@ -13,7 +13,7 @@ shell commands, pi stuff in general:
    - [CS107E repo] (http://cs107e.github.io/guides/)
 
 --------------------------------------------------------------------
-### Deliverables before thursday:
+### Deliverables
 
 Do these on your own (described more in the rest of the document):
 
@@ -32,7 +32,7 @@ Do these on your own (described more in the rest of the document):
 
 For this lab, you can just write the answers to these questions in a text file.
 
-The Thursday lab is broken down into five parts:
+Lab is broken down into five parts:
   1. You'll turn on an LED manually;
   2. Then copy a pre-compiled program to an micro-SD and boot up your pi;
   3. Then use a bootloader to ship the program to the pi directly;
@@ -67,13 +67,15 @@ Your partner's does.  You plug your setup into their laptop.
 
           % sudo apt install git
 
-   2. Use `git` to clone (check out) the class repository:
+   2. Use `git` to clone (check out) the class repository.
+    
+      If you have a git account with a key installed:
 
-          % git clone git@github.com:dddrrreee/cs140e-21spr.git  
+          % git clone git@github.com:dddrrreee/cs49n-21aut.git  
 
       If you don't want to install a key on github, use:
 
-          % git clone https://github.com/dddrrreee/cs140e-21spr.git
+          % git clone https://git@github.com:dddrrreee/cs49n-21aut.git  
 
       Pro tip: run your `git clone` command in some sensible directory
       (e.g., `~/class/`) and remember where you checked your repository
