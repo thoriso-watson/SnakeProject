@@ -75,7 +75,7 @@ Your partner's does.  You plug your setup into their laptop.
 
       If you don't want to install a key on github, use:
 
-          % git clone https://git@github.com:dddrrreee/cs49n-21aut.git  
+          % git clone https://github.com/dddrrreee/cs49n-21aut.git  
 
       Pro tip: run your `git clone` command in some sensible directory
       (e.g., `~/class/`) and remember where you checked your repository
