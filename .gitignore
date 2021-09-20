@@ -6,3 +6,4 @@
 *.swo
 staff-*.txt
 .gdb_history
+.DS_Store
