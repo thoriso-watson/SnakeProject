@@ -96,12 +96,13 @@ user:~/Desktop$
 
 There are many more commands installed supported by default. See
 [here](http://www.mathcs.emory.edu/~valerie/courses/fall10/155/resources/unix_cheatsheet.html)
-for a useful list.
+for a useful list. Use `man CMD` to get documentation about any command. Press
+`q` to close the window after you are done.
 
 You should use the shell for almost all operations you would otherwise use a
 graphical file browser for. It will save you time!
 
-NOTE: press Ctrl-C to cancel a command (e.g., it is taking too long).
+NOTE: press Ctrl-C to cancel a command (e.g., if it is taking too long).
 
 ## PATH
 
@@ -289,4 +290,5 @@ Waldo
 ```
 
 Pipes are useful with the `tail`, `head`, and `grep` commands, along with many
-others.
+others. Use `man CMD` to get documentation about any command. Press `q` to
+close the window after you are done.
