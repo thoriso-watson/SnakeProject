@@ -7,13 +7,13 @@ bytes. Every type also has an "alignment." This means that a value with type
 Alignment is used for convenience and efficiency, but sometimes results in
 wasted space in the form of padding bytes.
 
-Type                 Size (64 bit)    Alignment (64 bit)       Size (32 bit)      Alignment (32 bit)
------------------    --------------   -------------------      --------------     -------------------
-`char`                   1                   1                     1                  1
-`short`                  2                   2                     2                  2
-`int`                    4                   4                     4                  4
-`long`                   8                   8                     4                  4
-`long long`              8                   8                     8                  8
+Type     |           Size (64 bit) |  Alignment (64 bit)  |    Size (32 bit)  |   Alignment (32 bit) |
+----------------- |  --------------|  -------------------  |   --------------   | ------------------- |
+`char`           |       1        |          1          |          1         |        1               |
+`short`          |       2        |          2          |          2         |        2               |
+`int`            |       4        |          4          |          4         |        4               |
+`long`           |       8        |          8          |          4         |        4               |
+`long long`      |       8                   8          |          8         |        8               |
 
 # Pointers
 
@@ -26,12 +26,12 @@ type `T`.
 On a 32-bit architecture the size and alignment of `T*` is 4, and on a 64-bit
 architecture it is 8.
 
-Address         Value
---------        ------
-0x2021eca8      16
-0x2021ecac      5
-0x2021ecb0      -3
-0x2021ecb4      9
+Address      |  Value  |
+--------     |  ------ |
+0x2021eca8   |  16      |
+0x2021ecac   |  5      |
+0x2021ecb0   |  -3      |
+0x2021ecb4   |  9      |
 
 Suppose we have a pointer:
 
