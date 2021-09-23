@@ -63,7 +63,7 @@ For example, to turn on GPIO pin 20, we look in the Broadcom document:
       common when dealing with hardware, which is why this is a lab class.
       Otherwise you can get stuck for weeks on some uninteresting fact
       you simply do not know.  Hopefully, after this class you operate
-      robustly in the face of such nonsense.)
+      robustly in the face of such nonsense.
 
 The result of all this investigation is the following sleazy C code:
 
@@ -73,8 +73,10 @@ I.e., cast the locations `0x2020001C` to a `volatile unsigned` pointer
 and write  (store) the constant produced by shifting a 1 to the 20th
 (`1 << 20`) position there:
 
-   - `volatile` tells the compiler this pointer is magic and don't optimize its use away.
    - `unsigned` on the pi is 32-bits.   
+
+   - `volatile` tells the compiler this pointer is magic and don't
+     optimize its use away.
 
 Morally the above is fine, despite what some people might tell you.
 However, empirically, it is very easy to forget a `volatile` type
@@ -87,13 +89,12 @@ and `put32` to read and write addresses.  For example:
 
 `put32` will call out to assembly code (`gcc` currently cannot optimize
 this) writes the given value of the second argument to the address
-specified by the first.   
+specified by the first.
 
 In addition to correctness, this method of using `put32` and `get32`
 makes it trivial for us to write code that monitors, records, or intercepts
 all read and writes to device memory.   This trivial bit of instructure
 makes it easy for you to do a bunch of surprisingly powerful tricks:
-
 
   1. Instead of performing them on the local device memory we can
      send them over the network and control one or many remote r/pi's.
