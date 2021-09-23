@@ -15,6 +15,7 @@ You likely have a short somewhere and in the worst-case can fry your laptop.
      to get a big-picture background of how the r/pi (and many computer
      systems) control devices.
 
+
   2. After doing so, read through pages 4--7 and 91---96 of the broadcom
      document (`../../docs/BCM2835-ARM-Peripherals.annot.pdf`) to see what
      memory addresses to read and write to get the GPIO pins to do stuff.
@@ -40,13 +41,21 @@ You likely have a short somewhere and in the worst-case can fry your laptop.
      output on.  Your fetchquest is to chase down what addresses these
      are for GPIO pin 20, and what values you need.
 
-  3. Look through the `code` directory.  You'll be implementing the
+  3. Most hardware descriptions have errors and the broadcom chip is no
+     exception.  One nice thing about it is that people have gone through
+     it relatively carefully, and written up the errors 
+     ([errata](https://elinux.org/BCM2835_datasheet_errata).  You should
+     read through this to get a feel for the mistakes often made, especially
+     for any pages we read now or later.
+
+
+  4. Look through the `code` directory.  You'll be implementing the
      routines in `gpio.c` which is used by three simple programs: `1-blink.c`
      `2-blink.c` and `3-input.c`.  You only modify `gpio.c`.  We provide
      prototypes (in `rpi.h`) and some trivial assembly routines in
      `start.S`.
 
-  4. Note: where the broadcom document uses addresses `0x7420xxxx`, you'll use
+  5. Note: where the broadcom document uses addresses `0x7420xxxx`, you'll use
      `0x2020xxxx`.
 
 Questions you should be able to answer:
