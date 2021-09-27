@@ -18,7 +18,7 @@ are quick (< 60 minutes), some are longer.
   0. [blink](0-blink/): get everyone up to speed and all necessary
      software installed.
 
-  1. [blink](1-gpio/): You do the usual `blink` program by writing your 
+  1. [gpio](1-gpio/): You do the usual `blink` program by writing your 
      own GPIO implementations based on the Broadcom document GPIO description.
 
   2. [cross-check](2-cross-check/): you will use read-write logging
