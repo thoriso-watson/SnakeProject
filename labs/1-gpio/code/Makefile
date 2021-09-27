@@ -1,5 +1,7 @@
 PROGS = 1-blink.bin 2-blink.bin 3-input.bin
-OBJS = start.o gpio.o 1-blink.o 2-blink.o 3-input.o
+START := ./start.o
+OBJS = gpio.o 
+ALL_OBJS := $(OBJS) $(patsubst %.bin, %.o, $(PROGS))
 
 ARM = arm-none-eabi
 CC = $(ARM)-gcc
@@ -12,25 +14,30 @@ CFLAGS = -O -Wall -nostdlib -nostartfiles -ffreestanding  -march=armv6 -std=gnu9
 ASFLAGS = --warn --fatal-warnings -mcpu=arm1176jzf-s -march=armv6zk
 
 MEMMAP := ./memmap
-START := ./start.o
 
 # overkill: add all the .h's as dependencies, memmap and the makefile.
 DEPS := $(MEMMAP) $(wildcard ./*.h) ./Makefile 
 
-all:  $(START) $(OBJS) $(PROGS)
+all:  $(START) $(ALL_OBJS) $(PROGS)
 
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
-%.o: %.S
+%.o: %.S $(DEPS)
 	$(CC) -c $(CPP_ASFLAGS) $< -o $@
 
-# rules to generate .elf->.list->.bin
-%.elf: %.o gpio.o $(MEMMAP) $(DEPS) 
-	$(CC) $(CFLAGS) $(START) $< gpio.o -T $(MEMMAP) -o $@ 
+%.elf: %.o $(OBJS) $(DEPS) $(START) $(LIBS)
+	$(LD) $(START)  $< $(OBJS) -T $(MEMMAP) -o $@  $(LIBS)
 
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),cleanall)
+-include $(dep)  # include dep files
+endif
+endif
+
+./%.d: %.c $(DEPS)
+	$(CC) $(CFLAGS) $< -MM -MT $(@:.d=.o) >$@
 %.list: %.elf
-	$(OD) -D  $< > $@
-
+	$(OD) -D   $*.elf > $*.list
 %.bin: %.list
 	$(OCP) $*.elf -O binary $*.bin
 

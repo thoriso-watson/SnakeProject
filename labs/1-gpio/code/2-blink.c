@@ -1,4 +1,4 @@
-// part 1: uses your GPIO code to blink two LEDs where if one is off, the
+// part 1: uses your gpio.c code to blink two LEDs where if one is off, the
 // other is on.
 #include "rpi.h"
 

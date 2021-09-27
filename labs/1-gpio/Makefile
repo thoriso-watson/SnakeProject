@@ -11,7 +11,7 @@ clean: TARGET=clean
 
 # recursive call to make
 $(SUBDIRS): force
-	$(MAKE) -s -C $@ $(TARGET)
+	$(MAKE) -C $@ $(TARGET)
 
 clean:
 	rm -f *~ *.bak

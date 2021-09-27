@@ -11,9 +11,14 @@
 
 // see broadcomm documents for magic addresses.
 #define GPIO_BASE 0x20200000
-static const unsigned gpio_set0 = (GPIO_BASE + 0x1C);
-static const unsigned gpio_clr0 = (GPIO_BASE + 0x28);
-static const unsigned gpio_lev0 = (GPIO_BASE + 0x34);
+
+// use enums so can't modify.  never do pointer writes:
+// use GET32 and PUT32
+enum { 
+    gpio_set0 = (GPIO_BASE + 0x1C),
+    gpio_clr0 = (GPIO_BASE + 0x28),
+    gpio_lev0 = (GPIO_BASE + 0x34)
+};
 
 //
 // Part 1 implement gpio_set_on, gpio_set_off, gpio_set_output

@@ -18,10 +18,9 @@ Sign off: to get credit for the lab show the following:
       the docs).
 
    2. That `code/3-input.c` turns on an LED connected to pin 20 when
-      pin 21 is connected to 3v (either directly, via an LED, or via a
-      touch sensor or whatever other device you might want to try).
+      your touch sensor hooked up to 21 is touched.
 
-   3. That you can forward the signal from one pi to another.
+   3. Extension: That you can forward the signal from one pi to another.
       This requires the ability to run two pi's at once (as described
       in 0-blink).
 
@@ -205,7 +204,6 @@ You'll implement the following routines in `code/gpio.c`:
 </p>
 
 
-
 Hints:
    1. You write `GPFSELn` register (pages 91 and 92) to set up a pin as an
       output or input. You'll have to set GPIO 20 in GPFSEL2 to output.
@@ -240,6 +238,35 @@ use this to read input.  At this point you have the tools to control
 a surprising number of digital devices you can buy on eBay, adafruit,
 sparkfun, alibaba, etc.
 
+##### A. Get the hardware working
+
+We always try to test our hardware setup without software since doing so
+minimizes the places we need to debug if things do not work. A standard
+novice mistake is to wire up everything, write all the code, and ---
+when it invariably does not work --  then get stuck on all the different
+combinations of things that could be causing problems.  Our approach
+of trying to do everything one-at-a-time, in the smallest step we can
+think of, dramatically reduces the IQ needed to figure out mistakes.
+
+The touch sensor is in the `1-gpio/docs` directory:
+`docs/TTP223B-data-sheet.pdf`.
+
+Note, we are wiring up a bunch of stuff, so it'd be standard to use a breadboard
+(for a [tutorial](https://learn.sparkfun.com/tutorials/how-to-use-a-breadboard)).
+However to minimize confusion we will just use female-to-female jumper wires
+to connect everything.
+
+In our case, when the touch sensor is touched, it will produce voltage on its
+output pin.  We can check that it does so by just hardwiring this pin to an
+LED.
+   - Connect the `Vcc` output to the 3v pin on the pi.
+   - Connect `Gnd` to one of the ground pins.
+   - Connect `Vout` to the leg of an LED and the LED ground leg to ground.
+   - Verify that when you touch the sensor the LED lights up and when you
+     release it, it turns off.
+
+##### B. Implement the code.
+
 What you will do below:
 
    1. Implement `gpio_set_input` --- it should just be a few lines of
@@ -258,19 +285,9 @@ What you will do below:
  
    4. Run the code:
 
-
             % make
             % pi-install 3-input.bin
-            # touch the LED leg to pin 21: the second LED (connected to pin 20) goes on.
-            # remove the LEG touching pin 21: LED (connected to pin 20) goes off.
-
-   5. Success looks like the following (note: we used a bare jumper, but that is
-      likely asking for trouble):
-
-<p float="left">
-  <img src="images/part2-succ-on.jpg" width="450" />
-  <img src="images/part2-succ-off.jpg" width="450" />
-</p>
+            # touch the sensor to make the LED blink.
 
 --------------------------------------------------------------------------
 ### Part 3. Forward one pi signal to another.
