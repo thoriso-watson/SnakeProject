@@ -9,17 +9,19 @@ out how to use, let us know and we can drop it in.  We are going to go
 over them this week to shrink down, get through interesting stuff quickly.
 
 ------------------------------------------------------------------
-### Digital Devices (4 labs)
+### Digital Devices
 
 This chunk of the class involes you writing a few simple low-level
 devices and using modern techniques to check them.  Some of these labs
 are quick (< 60 minutes), some are longer.
 
   0. [blink](0-blink/): get everyone up to speed and all necessary
-     software installed.  You do the usual `blink` program by writing your 
+     software installed.
+
+  1. [blink](1-gpio/): You do the usual `blink` program by writing your 
      own GPIO implementations based on the Broadcom document GPIO description.
 
-  1. [cross-check](1-cross-check/): you will use read-write logging
+  2. [cross-check](2-cross-check/): you will use read-write logging
      to verify that your GPIO code is equivalent to everyone else's.
      If one person got the code right, everyone will have it right.
 
@@ -29,22 +31,22 @@ are quick (< 60 minutes), some are longer.
      mistake makes more a miserable quarter.  Thus, we show you modern
      tricks for ensuring your code is correct.
 
-  2. [hello](2-hello/): As you've noticed, debugging without even having
+  3. [hello](3-hello/): As you've noticed, debugging without even having
      `printf` is a hassle   Before we do a bunch of devices, we first
      get `printf` working by writing a couple GPIO functions and then
      putting then `libpi`.
 
-  3. [hall](3-hall-effect/):  for this lab you'll bang out your first
+  4. [hall](4-hall-effect/):  for this lab you'll bang out your first
      device: a hall-effect sensor that detects proximity of a magnet.
      We work directly off of the data sheets, so you get practice
      deciphering these.    They will be confusing.  This is expected.
      You will cross check your code against everyone else.
 
-  4. [sonar](4-sonar/): for this lab you'll write a more complicated
+  5. [sonar](5-sonar/): for this lab you'll write a more complicated
      driver to measure distance using sonar.  Again, we'll work directly
      from a datasheet.
 
-  5. [ir](5-ir/): we use a simple IR device to reverse engineer a remote
+  6. [ir](6-ir/): we use a simple IR device to reverse engineer a remote
      control protocol.    We then transmit this using an IR emitting LED
      and verify that it is accurate.  As usual, you cross check your code
      against everyone elses.

@@ -171,7 +171,7 @@ Important correctness note:
     for the current lab.
 
 --------------------------------------------------------------------------
-### Part 1.  Make blink work. (30 minutes)
+### Part 1.  Make blink work.
 
 You'll implement the following routines in `code/gpio.c`:
    1. `gpio_set_output(pin)` which will set `pin` to an output pin.  This should 
