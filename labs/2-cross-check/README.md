@@ -132,12 +132,42 @@ For this section:
  3. Again compare the results to your partner and post to the newsgroup.
 
 ----------------------------------------------------------------------
-#### Part 2. Implement a better version of memory that uses an array.
+
+#### Step 2: implement `gpio_set_function` and cross-check it  (40 minutes)
+
+This is the one step where you write some code.  But it's mainly just adapting
+the GPIO code you already implemented.
+
+For this write a version of `gpio_set_function` that works for other
+
+    // set GPIO function for <pin> (input, output, alt...).  settings for other
+    // pins should be unchanged.
+    void gpio_set_function(unsigned pin, gpio_func_t function);
+
+This is just a more generic version of your `gpio_set_output`
+and `gpio_set_input`.  You can see the interface description in
+`code/rpi.h`:
+
+For this, make sure the `5-tests*.c` are equivalant to other people.
+
+##### Checking that it works for real; see that printk works.
+
+As you've probably discovered, debugging without even `printf` is
+a hassle.  Before we do a bunch of devices, today's lab first gets
+`printf` working so that it's a bit easier.
+
+If you copy your `gpio.c` into `2-cross-check/code-hello` and type `make`
+it should produce a `hello.bin` that you can send to your pi and have it
+print and reboot.
+
+----------------------------------------------------------------------
+#### Part 3. Implement a better version of memory that uses an array.
 
 Our crude memory is relatively simple to understand, but very rigid
 since it uses a global variable for each address.  Make a copy of code
 (`cp -r code code-new`) and reimplement memory using an array.  When you
 rerun all the tests nothing should change.
+
 
 -------------------------------------------------------------------------
 #### Addendum: the power of fake execution + equivalance.
