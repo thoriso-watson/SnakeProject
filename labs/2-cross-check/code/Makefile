@@ -3,7 +3,7 @@
 DIR = ../../1-gpio/code
 
 # the raw, real source code that we include.
-REAL_SRC := $(DIR)/staff-gpio.c
+REAL_SRC := $(DIR)/gpio.c
 
 # our name for the library
 TARGET = libpi-fake.a
