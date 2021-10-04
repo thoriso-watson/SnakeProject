@@ -1,6 +1,6 @@
 # where the gpio code is.
+# DIR = /home/engler/class/cs49n-21aut-staff/labs/1-gpio/code.staff
 DIR = ../../1-gpio/code
-DIR = /home/engler/class/cs49n-21aut-staff/labs/1-gpio/code.staff
 
 # the raw, real source code that we include.
 REAL_SRC := $(DIR)/staff-gpio.c
