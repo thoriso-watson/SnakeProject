@@ -233,7 +233,7 @@ The `Makefile` in `code/tests` automates the process, but to
 understand how this works, let's run the `1-blink` from last lab
 using `fake-pi`:
 
-            % cd code
+            % cd labs/2-cross-check/code
             % make
             % ./1-blink > 1-blink.out
             % cksum 1-blink.out
