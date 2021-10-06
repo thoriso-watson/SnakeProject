@@ -99,7 +99,7 @@ usefully working examples of several powerful ideas:
      However, while a constructive expression of correctness is hard, if
      you have multiple implementations of the same interface, *detecting*
      incorrectness is often easy: for each input or test you have simply
-     run each different implementation on the same inputs and check if
+     run each different implementation on the same input and check if
      the output is identical.  If they differ, and the input was legal,
      then at least one is wrong.
 
@@ -137,7 +137,7 @@ assignments, return statements, etc.
 The main pi-specific stuff from our code in lab 1 is: 
    1. The assembly code (in `start.S`).  We will be testing the
       `gpio.c` implementations in isolation, so the assembly is not
-      relevant.    Thus, we can compile it to run on your your Unix
+      relevant.    Thus, we can compile `gpio.c` to run on your Unix
       laptop by simply switching compilers.
 
   2. The reads and writes to GPIO addresses.  Because we implemented
@@ -145,14 +145,15 @@ The main pi-specific stuff from our code in lab 1 is:
       use `get32` and `put32` we can trivially handle reads and writes
       of GPIO addresses by writing a fake implementation of `put32` and
       `get32`.  For our purposes today its enough to just implement a fake
-      memory where at each each `put32(a,v)` call we record that `mem[a]
+      memory where at eeach `put32(a,v)` call we record that `mem[a]
       = v` and at each `get32(a)` call, we return `mem[a]` if it exists.
 
 Implementation:
 
   - To make our `fake-pi.c` code as absolutely simple as possible
     our initial brain-dead implementation has a set of `enum` identifiers
-    for each tracked address:
+    for each tracked address (you will recognize these addresses from
+    `gpio.c`):
 
             // the locations we track.
             enum {
@@ -169,8 +170,8 @@ Implementation:
                     gpio_fsel1_v,
                     gpio_fsel2_v,
 
-    - `PUT32` simply switches on the input address and writes the associated
-       global (if any):
+  - `PUT32` simply switches on the input address and writes the associated
+    global (if any):
 
         void PUT32(uint32_t addr, uint32_t v) {
             ...
@@ -182,8 +183,8 @@ Implementation:
             ...
 
 
-    - `GET32` switches on the input address and returns the associated
-      value (if any):
+  - `GET32` switches on the input address and returns the associated
+    value (if any):
 
         // same but takes <addr> as a uint32_t
         uint32_t GET32(uint32_t addr) {
