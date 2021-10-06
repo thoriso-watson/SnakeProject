@@ -142,11 +142,11 @@ The main pi-specific stuff from our code in lab 1 is:
 
   2. The reads and writes to GPIO addresses.  Because we implemented
       `gpio.c` to never access GPIO addresses directly, but instead only
-      use `get32` and `put32` we can trivially handle reads and writes
-      of GPIO addresses by writing a fake implementation of `put32` and
-      `get32`.  For our purposes today its enough to just implement a fake
-      memory where at eeach `put32(a,v)` call we record that `mem[a]
-      = v` and at each `get32(a)` call, we return `mem[a]` if it exists.
+      use `GET32` and `PUT32` we can trivially handle reads and writes
+      of GPIO addresses by writing a fake implementation of `PUT32` and
+      `GET32`.  For our purposes today its enough to just implement a fake
+      memory where at eeach `PUT32(a,v)` call we record that `mem[a]
+      = v` and at each `GET32(a)` call, we return `mem[a]` if it exists.
 
 Implementation:
 
@@ -195,7 +195,7 @@ Implementation:
             ...
             case gpio_lev0:  v = fake_random();  break;
 
-       Note we treat most GPIO memory as, conceptually, regular memory
+       Note we treat most GPIO memory as the same as "regular" memory
        in that every read returns the value of the last write.  However,
        we treat one address differently --- `gpio_lev0` --- since that is
        how code reads the value of an input pin.  Input is controlled by
@@ -211,7 +211,7 @@ Implementation:
 To see how this all works:
 
   1. Look in `code/fake-pi.c` and read the comments.
-     For the extension you will modify `put32` and `get32`, but for now
+     For the extension you will modify `PUT32` and `GET32`, but for now
      just understand how they work.
 
   2. Before you start, run `make` in `code/` and make sure everything
@@ -219,7 +219,7 @@ To see how this all works:
      from lab 1.
 
   3. You will now have `code/1-blink`, `code/2-blink`, and `code/3-input`
-     --- you can run them and see the `put32` and `get32` calls they
+     --- you can run them and see the `PUT32` and `GET32` calls they
      perform.
 
   4. An easy way to compare these results to your partner is to compute
@@ -239,7 +239,7 @@ using `fake-pi`:
             % cksum 1-blink.out
 
   1. `./1-blink > 1-blink.out`: should run without crashing and,
-     importantly, print out the values for each `put32` and `get32`
+     importantly, print out the values for each `PUT32` and `GET32`
      in the exact order they happened and store them in `1-blink.out`.
   2. `cksum 1-blink.out`: computes and prints the checksum of the stored output.
      You can compare this to your partner(s).
@@ -251,7 +251,7 @@ using `fake-pi`:
 ----------------------------------------------------------------------
 #### Part 1. Check your code against everyone else 
 
-Given the `get32` and `put32` modifications above, a simple, stringent
+Given the `GET32` and `PUT32` modifications above, a simple, stringent
 approach is to check that two `gpio` implementations are the same:
 
   1. They read and write the same addresses in the same order with
