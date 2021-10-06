@@ -1,173 +1,407 @@
 ### Lab: automatically cross-check your GPIO code against everyone else's.
 
 A goal of this course is that you will write every single line of
-(interesting) low level code you use.  A good result of this approach is
-that you will understand everything and, unlike most OS courses, there
-will not be a lot of opaque, magical code that you have no insight into,
-other than sense of unease that it does important stuff beyond your ken.
+(interesting) low level code you use.  A good result of this approach
+is that you will understand everything and, unlike most embedded or
+operating systems courses, there will not be a lot of opaque, magical
+code that you have no insight into, other than sense of unease that it
+does important stuff beyond your ken.
 
 An obvious potential result of this strategy is that since you are writing
 all code your system depends on, a single bug can make the rest of the
 quarter miserable.
 
-This lab will have you build the initial pieces needed to automatically
-check that your homework code is correct.
+Today's lab uses simple implementations of several powerful ideas to
+check if your `gpio.c` code from last lab has bugs.
 
-After completing the lab you will:
-
-  1. Be able to check that your `gpio` code is equivalent to
-     everyone else's in the class by tracing all reads and writes
-	 it does and comparing them to everyone else's implementation.
-	 If even one person gets it right, then showing equivalence means
-	 you got it right too.  And, nicely, automatically detect if any
-	 subsequent modifications you do break the code.
-
-   2. Be able to quickly, correctly write a more full-featured
-	`gpio` implementation by checking its equivalence against the
-	fairly complicated code used in the initial cs107e class.
+After completing the lab you will be able to check that your `gpio.c`
+code is effectively equivalent to everyone else's in the class by
+tracing all reads and writes it does and comparing them to everyone
+else's implementation.  If even one person gets it right, then showing
+equivalence means you got it right too.  And, nicely, automatically
+detect if any subsequent modifications you do break the code.
 
 #### Sign-off
 
-Pass the tests for both parts of thelab:
+There are three parts for sign-off:
 
-   1. `code`: You get the same checksum as everyone else for
-      all the `.out` files produced by the tests in `code/tests`.
+   1. Your checksums for the tests in `code/tests` pass.  
 
-   2. You replace our simple but crude use of a fixed number of
-      global variables for memory with an array and array lookup.
-      The checksums you get should exactly match those in part 1:
-      I.e., nothing should change.
+      The quickest way to check equivalance: after doing both part 1 and
+      part 2 (below) open `code/tests/Makefile` in your editor, set 
+      `TEST_SRC := $(wildcard ./*.c)` (at the top of the `Makefile`)
+      and compute a checksum of all your checksums
+      by running:
+
+            # make sure everything is compiled.
+            code/tests % make emit
+            # compute the cksum of your cksums.
+            code/tests % make cksum | sort -n | cksum 
+
+      This reduces all the output to a single number you can compare
+      at a glance with everyone else.  Note: you'll have to work with
+      everyone to figure out who is wrong when there is a difference.
+
+   2. You implement a new function `gpio_set_function` and check that it 
+      gives the same checksum. 
+
+   3. Compile the code in `code-hello` using your final `gpio.c` and 
+      show that it prints `hello` when run.
+
+There's one extension:
+
+   - You replace our simple but crude use of a fixed
+     number of global variables for memory with an array and array lookup.
+     The checksums you get should exactly match those in part 1: I.e.,
+     nothing should change.
+
+------------------------------------------------------------------------
+#### Background: Concepts you will learn.
+
+Today's lab has relatively little code.  However, this code gives
+usefully working examples of several powerful ideas:
+
+  1. You will see how to build a trivial, but useful fake-pi "simulator"
+     (`code/fake-pi.c`) that can run your r/pi code on your Unix laptop
+     instead of the r/pi hardware, *without* requiring any modification
+     other than re-compilation.  
+    
+     One nice result of running on your laptop is that it makes it
+     much easier to debug bare-metal r/pi code because you have memory
+     protection (so dereferencing a null or illegal pointer will cause a
+     crash) and a debugger (so you can find such bugs easily).  A second
+     nice feature is the next:
+
+  2. You will also see how to use the fake-pi code to do read-write
+     equivalance checking, a simple, little known trick that lets you
+     easily check your code behaves identically to other people's,
+     even if their code looks very different.
+
+     The end result: with a couple hours of work, you will be
+     very surprised if your code has bugs. You will also be able to
+     immediately detect many cases where a later modification causes
+     different behavior (e.g., if you speed the code up, clean it up, use
+     different compiler options, etc.)   We will use this trick constantly
+     thoughout the quarter.  (And I think all embedded software should
+     be built using some variation of it.)
+
+  3. You will also see the power of using cross-checking to detect
+     incorrect code.  Often checking correctness even very-partially
+     takes more code than the actual code being checked. Further,
+     it's generally hard to even get a complete, accurate statement
+     of what correctness for a variety of reasons: specification size,
+     ambiguity, corner cases or outright  specification mistakes.
+     Specfications are not magic, and they have bugs just like code does
+     (and for similar reasons) --- you have already seen an example
+     in the Broadcom document where their description of their own
+     hardware incorrect.
+
+     However, while a constructive expression of correctness is hard, if
+     you have multiple implementations of the same interface, *detecting*
+     incorrectness is often easy: for each input or test you have simply
+     run each different implementation on the same inputs and check if
+     the output is identical.  If they differ, and the input was legal,
+     then at least one is wrong.
+
+     Note that if all implementations agree this does not mean they
+     are correct.  They could all have the same mistake.  But, note,
+     also that in such cases, the other approach of checking against a
+     specification would also likely miss the error (because the same
+     conceptual mistake could easily cause issues with the specification
+     as well).
+
+     But, in general, there is no panacea for correctness --- if the
+     code matters, do everything you can!  One nice thing about easy
+     approaches is you can do a lot more of them.
+
+     If there's one thing you learn in this class, it's hard to
+     do better than routinely checking your code in such a way.
+     Cross-checking appears in many places in computer systems (e.g.,
+     "n-version programming")  and, also outside them.  In a sense, you
+     could argue that cross-checking ("same input = same result?") is
+     a key reason that the natural sciences have seen such a massive
+     increase in effectivess over the past few centuries, where they
+     call it "reproducibility".
 
 
 ----------------------------------------------------------------------
-#### 1. Make a fake implementation of `put32` and `get32`
+#### Background: making a fake pi implementation
 
-In order to make testing easy, we want to be able to run your r/pi code ---
-unaltered --- on your Unix laptop.  This might seem implausible, since the
-code was written to run on the r/pi.   However, if as you look at the code,
-most of it is C code, which will run the same on the r/pi and your laptop.
-The main pi-specific stuff is (1) the addresses we read and write and (2) the
-assembly code.   We will be testing the gpio-implementations in isolation,
-so the assembly is not relevant.   That leaves the addresses.   
+In order to make testing easy, we want to be able to run your r/pi code
+--- unaltered --- on your Unix laptop.  This might seem implausible,
+since the code was written to run on the r/pi.   However, if as you look
+at the code, most of it is C code, which will run the same on the r/pi
+and your laptop --- if-statements will work the same as will addition,
+assignments, return statements, etc.
 
-What do you need to do so?  
+The main pi-specific stuff from our code in lab 1 is: 
+   1. The assembly code (in `start.S`).  We will be testing the
+      `gpio.c` implementations in isolation, so the assembly is not
+      relevant.    Thus, we can compile it to run on your your Unix
+      laptop by simply switching compilers.
 
-  1. Compile it for Unix.   Fortunately, because of the way we wrote `
-     gpio.c` you can easily compile it both for RPI and to run on your
-     Unix laptop by simply switching compilers.  
+  2. The reads and writes to GPIO addresses.  Because we implemented
+      `gpio.c` to never access GPIO addresses directly, but instead only
+      use `get32` and `put32` we can trivially handle reads and writes
+      of GPIO addresses by writing a fake implementation of `put32` and
+      `get32`.  For our purposes today its enough to just implement a fake
+      memory where at each each `put32(a,v)` call we record that `mem[a]
+      = v` and at each `get32(a)` call, we return `mem[a]` if it exists.
 
-  2. Override what happens when it writes to GPIO memory or calls ARM-specific
-     assembly code.   
+Implementation:
 
-     Since your `gpio.c` is simple, all you'll have to do is provide fake
-     implementations of `get32` and `put32` so that we can override what
-     happens when your code writes to GPIO memory.   
+  - To make our `fake-pi.c` code as absolutely simple as possible
+    our initial brain-dead implementation has a set of `enum` identifiers
+    for each tracked address:
+
+            // the locations we track.
+            enum {
+                gpio_fsel0 = (GPIO_BASE + 0x00),
+                gpio_fsel1 = (GPIO_BASE + 0x04),
+                gpio_fsel2 = (GPIO_BASE + 0x08),
+                ...
+
+    Along with a global variable holding the value for each one:
+
+            // the value for each location.
+            static unsigned
+                    gpio_fsel0_v,
+                    gpio_fsel1_v,
+                    gpio_fsel2_v,
+
+    - `PUT32` simply switches on the input address and writes the associated
+       global (if any):
+
+        void PUT32(uint32_t addr, uint32_t v) {
+            ...
+            switch(addr) {
+            case gpio_fsel0: gpio_fsel0_v = v;  break;
+            case gpio_fsel1: gpio_fsel1_v = v;  break;
+            case gpio_fsel2: gpio_fsel2_v = v;  break;
+            case gpio_fsel3: gpio_fsel3_v = v;  break;
+            ...
 
 
-First steps:
-  1. From the pre-lab: Look in `code/fake-pi.c` and read the comments.  
-     For part 2 you will modify `put32` and `get32`, but for now
+    - `GET32` switches on the input address and returns the associated
+      value (if any):
+
+        // same but takes <addr> as a uint32_t
+        uint32_t GET32(uint32_t addr) {
+            unsigned v;
+            switch(addr) {
+            case gpio_fsel0: v = gpio_fsel0_v; break;
+            case gpio_fsel1: v = gpio_fsel1_v; break;
+            ...
+            case gpio_lev0:  v = fake_random();  break;
+
+       Note we treat most GPIO memory as, conceptually, regular memory
+       in that every read returns the value of the last write.  However,
+       we treat one address differently --- `gpio_lev0` --- since that is
+       how code reads the value of an input pin.  Input is controlled by
+       the external environment --- if we simply returned the value of
+       the last write we would ignore many possible values.  Instead we
+       return a pseudo-random value each time, since the environment
+       could change.
+
+       Similar in spirit, we could add additional checking to detect
+       if people ever read the `set0` or `clr0` addresses (this caused
+       various bugs in lab 1).  You're welcome to do so!
+
+To see how this all works:
+
+  1. Look in `code/fake-pi.c` and read the comments.
+     For the extension you will modify `put32` and `get32`, but for now
      just understand how they work.
 
-  2. Before you start, run `make` and make sure everything compiles.
-     Note: the code will use your `gpio.h` and `gpio.c` from lab 1 so
-     if you get compile errors it's probably because you have stuff in the 
-     wrong place.
+  2. Before you start, run `make` in `code/` and make sure everything
+     compiles.  Note: the code will use your `gpio.h` and `gpio.c`
+     from lab 1.
 
-The key thing to understand is how we build a fake memory so that you
-can implement `put32` and `get32` (again, look in `fake-pi.c` file).
+  3. You will now have `code/1-blink`, `code/2-blink`, and `code/3-input`
+     --- you can run them and see the `put32` and `get32` calls they
+     perform.
 
-Mechanically: at each `put32(a,v)` call you want to record that `a`
-maps to value `v` so that all subsequent `get32(a)` calls will return
-`v`.  Since "the unavoidable price of correctness is simplicity"  (to
-mangle a C.A.R. Hoare quote), just record this mapping in a fixed-size
-array, and do a linear scan looking for it.  Do not use a hash table,
-a tree, or any other fancy-pants data structure that will only be fast
-at causing bugs.  We do not need speed here.
+  4. An easy way to compare these results to your partner is to compute
+     a "checksum" of them that reduces the arbitrary output to a single
+     integer.  We do so using the standard Unix `cksum` program.
 
-For `put32(addr,v)`: 
-  1. Create an entry for `addr` in your fake memory if `addr` doesn't exist.
-  2. Write `v` to `addrs` entry.
-  3. Call `print_write(addr,v)`.
+  5. If you then look in `code/tests` you will see a more complete set
+     of tests.
 
-For `get32(addr)`:
+The `Makefile` in `code/tests` automates the process, but to 
+understand how this works, let's run the `1-blink` from last lab
+using `fake-pi`:
 
-  1. If `addr` does not exist, insert `(addr, random())` (but do not print anything).
-  2. Get the value `v` associated with `addr`.
-  3. Call `print_read(addr,v)` to print out the address and value.
-  4. Return `v`.
+            % cd code
+            % make
+            % ./1-blink > 1-blink.out
+            % cksum 1-blink.out
 
-To test it:
-  1. Run `./1-blink > out` on Unix.	It should run without
-	   crashing and, importantly, print out the values for each
-	   `put32` and `get32` in the exact order they happened.
-  2. Get the checksum of the output (`cksum out`) and compare to your partner.
+  1. `./1-blink > 1-blink.out`: should run without crashing and,
+     importantly, print out the values for each `put32` and `get32`
+     in the exact order they happened and store them in `1-blink.out`.
+  2. `cksum 1-blink.out`: computes and prints the checksum of the stored output.
+     You can compare this to your partner(s).
   3. If these values match, you know your code worked the same as your partner's.
-  4. Now post to the newsgroup so everyone can compare.
-  5. If everyone matches, and one person got it right, we've proven that
+  4. Now as you do all the rest, post your results to the newsgroup so everyone can compare.
+  5. If everyone matches, and one person got it right, we've shown that
        everyone has gotten it right (at least for the values tested).
 
 ----------------------------------------------------------------------
 #### Part 1. Check your code against everyone else 
 
-After you checked your fake `put32` and `get32` we now want to check that
-your `gpio` code works the same as everyone else.  Given the `get32` and
-`put32` modifications above, a simple, stringent approach is to check
-that two `gpio` implementations are the same:
+Given the `get32` and `put32` modifications above, a simple, stringent
+approach is to check that two `gpio` implementations are the same:
 
   1. They read and write the same addresses in the same order with
-  the same values.
+     the same values.
   2. They return the same result.    (For our implementations we
-  did not return any result, so this just means that your code
-  never crashes.)
+     did not return any result, so this just means that your code never
+     crashes.)
 
 If both checks pass then we know that both implementations are equivalent
 --- at least for the tested inputs.
 
-For this section:
- 1. Uncomment out the rule for `test-gpio` in `Makefile` and run `make`.
-       This will compile the test harness `test-gpio.c`.
- 2. You can test each function individually by running `test-gpio 0`,
-       `test-gpio 1`, etc.  (Look in the `test-gpio.c` file.)
- 3. Again compare the results to your partner and post to the newsgroup.
+You won't write much code for this part, most of the work will be
+comparing different `PUT32` and `GET32` traces for the tests given in
+`code/tests` to see what the differences are from.
+
+The tests are organized in increasing difficulty to debug.   
+  - Tests with a `1-` prefix are the easiest (start there) and just contain
+    a single legal call to a `gpio.c` routine.
+
+  - Tests with a `2-` prefix are more difficult since they test many pins, both
+    legal and illegal.
+
+  - Tests with a `prog-` prefix are full program tests (taken from last lab).
+
+The `Makefile` in `code/tests` has a set of targets to automate the process.
+
+  - The files specified by the `TEST_SRC` variable at the top of `code/test/Makefile` 
+    determine which tests get run.  For example, to run all simple tests:
+
+            TEST_SRC := $(wildcard ./[1]-*.c)
+
+    `Makefile` variables are like regular variables in that the last
+    write wins.  You don't have to comment out previous writes.
+
+  - `make run`: will run all the specified tests.
+  - `make emit`: will run all the specified tests and save the output to a `.out` file.
+     (e.g., running `1-blink` will produce `1-blink.out`).  You can open this file like you
+     would any, but using the `more` or `cat` command is easier / faster.
+  - `make cksum`: will run all the specified tests and reduce their entire output to a single
+     integer using the `cksum` program.  You can quickly determine if you get the
+     same result as your partner(s) by just comparing this integer.
+    
+
+##### Making  code behave the same on illegal inputs
+
+The first batch of tests only run on a single legal input.  However,
+the second batch (`2-*.c`) check illegal pin inputs as well.  If we
+don't state how to handle them, it's easy to get different results.
+
+To keep things simple, you should check if a pin is larger than 32
+and, for `void` routines, simply check and return at the start of 
+the routine:
+
+        if(pin >= 32)
+            return;
+
+(So: At the start of `gpio_set_on`, `gpio_set_off`, `gpio_set_input`,
+`gpio_set_output`.)
+
+And for non-void, such as `gpio_read`, check and return `-1`:
+
+        if(pin >= 32)
+            return -1;
+
+
+We would normally print and error and crash, but at the moment we don't
+even have `printk` so simply return.
+
+Note: no matter what, we definitely need to check for illegal pins since
+they are being used to compute an address that we read and write to
+(i.e., they determine the value passed to `GET32` and `PUT32`).  Since we
+are running without memory protecton, such invalid accesses are extremely bad 
+since they can silently corrupt data we use or issue weird hardware commands.
+
+##### Checkoff
+
+The easiest way to check all the runs:
+    
+  1. set `TEST_SRC`:
+
+        # run all the 1-*.c 2-*.c and prog-*.c tests
+        TEST_SRC := $(wildcard ./[12]-*.c) $(wildcard ./prog-*.c)
+
+   2. Compute the checksum of checksums.
+
+        # ensure all the code is compiled so won't be in our output.
+        % make 
+        # compute a checksum of check sums.
+        % make cksum | sort -n | cksum 
 
 ----------------------------------------------------------------------
 
-#### Step 2: implement `gpio_set_function` and cross-check it  (40 minutes)
+#### Step 2: implement `gpio_set_function` and cross-check it 
+
+As you've probably discovered, debugging without even `printf` is a
+hassle.  Before we do a bunch of devices in later labs, let's implement
+the `GPIO` code `printf` working so that it's a bit easier.
+
+    - For historical reasons we call our kernel `printf` `printk` both
+      because it's running at privileged level (and so errors can crash
+      the machine versus an application segmentation fault) and because
+      our implementation isn't quite `printf`.
+
 
 This is the one step where you write some code.  But it's mainly just adapting
 the GPIO code you already implemented.
 
-For this write a version of `gpio_set_function` that works for other
+If you look in `code/rpi.h` you can see the definition:
 
     // set GPIO function for <pin> (input, output, alt...).  settings for other
     // pins should be unchanged.
     void gpio_set_function(unsigned pin, gpio_func_t function);
 
-This is just a more generic version of your `gpio_set_output`
-and `gpio_set_input`.  You can see the interface description in
-`code/rpi.h`:
+This is just a more generic version of your `gpio_set_output` and
+`gpio_set_input`.    It takes an `enum` constant telling it how to
+configure the pin (the Broadcom document pages you used for the last
+lab tell you what they mean).
 
-For this, make sure the `5-tests*.c` are equivalant to other people.
+What to do:
+   0. Do all edits to your `gpio.c` from lab 1.
+   1. Because of a mistake on my part, you'll need to copy the
+      `gpio_func_t` enum` declaration in `code-hello/rpi.h` into
+      `1-gpio/code/rpi.h` or it won't compile.  Kind of ridiculous.
+       Apologies for that.
+   2. Adapt your `gpio_set_output` code to bitwise-or the given flag.
+   3. Error check not just the input `pin` but also the `function` 
+      value.
 
-##### Checking that it works for real; see that printk works.
-
-As you've probably discovered, debugging without even `printf` is
-a hassle.  Before we do a bunch of devices, today's lab first gets
-`printf` working so that it's a bit easier.
-
-If you copy your `gpio.c` into `2-cross-check/code-hello` and type `make`
-it should produce a `hello.bin` that you can send to your pi and have it
-print and reboot.
+Checkoff:
+   1. Make sure the `5-tests*.c` are equivalant to other people.
+   2. Rewrite your `gpio_set_input` and `gpio_set_output` to call 
+      `gpio_set_function` and then verify you get the same checksums.
+      (See a pattern?)
+   3. Checking that `printk` now works for real;
+      copy your `gpio.c` into `2-cross-check/code-hello` and type `make`
+      it should produce a `hello.bin` that you can send to your pi (using
+      `pi-install`) and have it print and reboot.
 
 ----------------------------------------------------------------------
-#### Part 3. Implement a better version of memory that uses an array.
+#### Extension: . Implement a better version of memory that uses an array.
 
 Our crude memory is relatively simple to understand, but very rigid
 since it uses a global variable for each address.  Make a copy of code
 (`cp -r code code-new`) and reimplement memory using an array.  When you
 rerun all the tests nothing should change.
 
+----------------------------------------------------------------------
+#### Extension: write other tests.
+
+We'll give an extension credit if you can write a test you that detects
+a new difference that the provided tests miss.
 
 -------------------------------------------------------------------------
 #### Addendum: the power of fake execution + equivalance.
