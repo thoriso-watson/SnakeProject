@@ -22,9 +22,7 @@ are quick (< 60 minutes), some are longer.
      own GPIO implementations based on the Broadcom document GPIO description.
 
 
-Upcoming labs:
-
-  - [cross-check](1-cross-check/): you will use read-write logging
+  - [cross-check](2-cross-check/): you will use read-write logging
      to verify that your GPIO code is equivalent to everyone else's.
      If one person got the code right, everyone will have it right.
 
@@ -33,6 +31,8 @@ Upcoming labs:
      approach is that there is no magic.  A bad thing is that a single
      mistake makes more a miserable quarter.  Thus, we show you modern
      tricks for ensuring your code is correct.
+
+Upcoming labs:
 
   - [hello](2-hello/): As you've noticed, debugging without even having
      `printf` is a hassle   Before we do a bunch of devices, we first
