@@ -350,16 +350,16 @@ As you've probably discovered, debugging without even `printf` is a
 hassle.  Before we do a bunch of devices in later labs, let's implement
 the `GPIO` code `printf` working so that it's a bit easier.
 
-    - For historical reasons we call our kernel `printf` `printk` both
-      because it's running at privileged level (and so errors can crash
-      the machine versus an application segmentation fault) and because
-      our implementation isn't quite `printf`.
+ - For historical reasons we call our kernel `printf` `printk` both
+   because it's running at privileged level (and so errors can crash
+   the machine versus an application segmentation fault) and because
+   our implementation isn't quite `printf`.
 
 
 This is the one step where you write some code.  But it's mainly just adapting
 the GPIO code you already implemented.
 
-If you look in `code/rpi.h` you can see the definition:
+The header `code/rpi.h` in today's lab gives the definition:
 
     // set GPIO function for <pin> (input, output, alt...).  settings for other
     // pins should be unchanged.
