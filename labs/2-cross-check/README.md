@@ -337,10 +337,10 @@ The easiest way to check all the runs:
 
   2. Compute the checksum of checksums.
 
-        # ensure all the code is compiled so won't be in our output.
-        % make 
-        # compute a checksum of check sums.
-        % make cksum | sort -n | cksum 
+            # ensure all the code is compiled so won't be in our output.
+            % make 
+            # compute a checksum of check sums.
+            % make cksum | sort -n | cksum 
 
 ----------------------------------------------------------------------
 
