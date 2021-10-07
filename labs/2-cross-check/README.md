@@ -251,8 +251,9 @@ using `fake-pi`:
 ----------------------------------------------------------------------
 #### Part 1. Check your code against everyone else 
 
-Given the `GET32` and `PUT32` modifications above, a simple, stringent
-approach is to check that two `gpio` implementations are the same:
+To summarize the above description: Given the `GET32` and `PUT32`
+modifications above, a simple, stringent approach is to check that two
+`gpio` implementations are the same:
 
   1. They read and write the same addresses in the same order with
      the same values.
@@ -278,7 +279,7 @@ The tests are organized in increasing difficulty to debug.
 
 The `Makefile` in `code/tests` has a set of targets to automate the process.
 
-  - The files specified by the `TEST_SRC` variable at the top of `code/test/Makefile` 
+  - The files specified by the `TEST_SRC` variable at the top of `code/tests/Makefile` 
     determine which tests get run.  For example, to run all simple tests:
 
             TEST_SRC := $(wildcard ./[1]-*.c)
@@ -329,13 +330,13 @@ since they can silently corrupt data we use or issue weird hardware commands.
 ##### Checkoff
 
 The easiest way to check all the runs:
-    
-  1. set `TEST_SRC`:
+
+  1. Set `TEST_SRC`:
 
         # run all the 1-*.c 2-*.c and prog-*.c tests
         TEST_SRC := $(wildcard ./[12]-*.c) $(wildcard ./prog-*.c)
 
-   2. Compute the checksum of checksums.
+  2. Compute the checksum of checksums.
 
         # ensure all the code is compiled so won't be in our output.
         % make 
