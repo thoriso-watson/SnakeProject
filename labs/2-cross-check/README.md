@@ -330,11 +330,10 @@ since they can silently corrupt data we use or issue weird hardware commands.
 ##### Checkoff
 
 The easiest way to check all the runs:
-
   1. Set `TEST_SRC`:
 
-        # run all the 1-*.c 2-*.c and prog-*.c tests
-        TEST_SRC := $(wildcard ./[12]-*.c) $(wildcard ./prog-*.c)
+            # run all the 1-*.c 2-*.c and prog-*.c tests
+            TEST_SRC := $(wildcard ./[12]-*.c) $(wildcard ./prog-*.c)
 
   2. Compute the checksum of checksums.
 
