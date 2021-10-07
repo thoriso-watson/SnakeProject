@@ -371,13 +371,14 @@ configure the pin (the Broadcom document pages you used for the last
 lab tell you what they mean).
 
 What to do:
-   0. Do all edits to your `gpio.c` from lab 1.
-   1. Because of a mistake on my part, you'll need to copy the
+
+  0. Do all edits to your `gpio.c` from lab 1.
+  1. Because of a mistake on my part, you'll need to copy the
       `gpio_func_t` enum` declaration in `code-hello/rpi.h` into
       `1-gpio/code/rpi.h` or it won't compile.  Kind of ridiculous.
        Apologies for that.
-   2. Adapt your `gpio_set_output` code to bitwise-or the given flag.
-   3. Error check not just the input `pin` but also the `function` 
+  2. Adapt your `gpio_set_output` code to bitwise-or the given flag.
+  3. Error check not just the input `pin` but also the `function` 
       value.
 
 Checkoff:
