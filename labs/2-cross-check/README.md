@@ -284,8 +284,9 @@ The `Makefile` in `code/tests` has a set of targets to automate the process.
 
             TEST_SRC := $(wildcard ./[1]-*.c)
 
-    `Makefile` variables are like regular variables in that the last
-    write wins.  You don't have to comment out previous writes.
+    You could change `[1]` to `[2]` to run the second batch of tests, or `[12]`
+    to run both batches.  `Makefile` variables are like regular variables in
+    that the last write wins.  You don't have to comment out previous writes.
 
   - `make run`: will run all the specified tests.
   - `make emit`: will run all the specified tests and save the output to a `.out` file.
@@ -350,7 +351,7 @@ As you've probably discovered, debugging without even `printf` is a
 hassle.  Before we do a bunch of devices in later labs, let's implement
 the `GPIO` code `printf` working so that it's a bit easier.
 
- - For historical reasons we call our kernel `printf` `printk` both
+ - For historical reasons we call our kernel's `printf` "`printk`" both
    because it's running at privileged level (and so errors can crash
    the machine versus an application segmentation fault) and because
    our implementation isn't quite `printf`.
@@ -392,12 +393,12 @@ Checkoff:
       `pi-install`) and have it print and reboot.
 
 ----------------------------------------------------------------------
-#### Extension: . Implement a better version of memory that uses an array.
+#### Extension: Implement a better version of memory that uses an array.
 
-Our crude memory is relatively simple to understand, but very rigid
-since it uses a global variable for each address.  Make a copy of code
-(`cp -r code code-new`) and reimplement memory using an array.  When you
-rerun all the tests nothing should change.
+Our crude memory in `fake-pi.c` is relatively simple to understand, but very
+rigid since it uses a global variable for each address.  Make a copy of code
+(`cp -r code code-new`) and reimplement memory using an array.  When you rerun
+all the tests nothing should change.
 
 ----------------------------------------------------------------------
 #### Extension: write other tests.
@@ -444,7 +445,7 @@ output is sufficient.)   It does have a couple of challenges.
 
    2. It will semantically equivalant runs that have superficial
       differences.  For example, consider code where one implementation
-      first sets sets GPIO pin 19 to an output pin, and then pin 20 while
+      first sets GPIO pin 19 to an output pin, and then pin 20 while
       another does the reverse.  Intuitively these are the same, since
       it does not matter which order you set these pins, but since these
       reads and writes will be in different orders we will reject these.
@@ -456,7 +457,7 @@ output is sufficient.)   It does have a couple of challenges.
       specifying such differences which, unfortunately, we lack the time
       to get into.  One easy (but a bit imperfect) hack in our domain
       is to consider reads and writes to different r/pi devices to be
-      indenepent (this is not always true) or multiple reads or writes
+      independent (this is not always true) or multiple reads or writes
       of the same location to be equivalant to a single read or write
       (again, not always true).
 
