@@ -48,6 +48,7 @@ As a simple test:
 
         % cd 3-sonar/00-hello
         % make
+        % pi-install hello.bin
 
 Should print:
 
