@@ -24,8 +24,9 @@ int read_while_eq(int pin, int v, unsigned timeout) {
 // 	a longer one. 
 //
 // The comments on the sparkfun product page might be helpful.
-hc_sr04_t hc_sr04_init(int trigger, int echo) {
+hc_sr04_t hc_sr04_init(unsigned trigger, unsigned echo) {
     hc_sr04_t h = { .trigger = trigger, .echo = echo };
+
     unimplemented();
     return h;
 }
@@ -48,7 +49,7 @@ hc_sr04_t hc_sr04_init(int trigger, int echo) {
 //	high (or low) readings before you decide to trust the 
 // 	signal.
 //
-int hc_sr04_get_distance(hc_sr04_t *h, unsigned timeout_usec) {
+int hc_sr04_get_distance(hc_sr04_t h, unsigned timeout_usec) {
     unimplemented();
     return -1;
 }
