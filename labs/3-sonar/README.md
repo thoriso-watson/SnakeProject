@@ -95,7 +95,7 @@ Once your code works, change `libpi` to use your `gpio.c`.
   4. If you `make` and rerun your sonar it should still work.
 
 Move your `hr-sr04.c` to `libpi`:
-  1. This should follow the above except you are simply adding `hr-sr04.c` to
+  1. This should follow the above except you are simply adding `hc-sr04.c` to
      `SRC` and there is nothing to delete from `STAFF_OBJS`.
   2. Remove `hr-sr04.c` from today's lab `SRC` in `code/Makefile`.
   3. Remake and rerun the lab --- it should behave the same.
