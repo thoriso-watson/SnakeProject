@@ -134,6 +134,14 @@ so we need to multiple by `q*n` to simplify:
 
         abs(p*n - q*on) < abs(p*n - q*(on+1))
 
+
+
+Perhaps the easiest way to understand is to look at 
+[an integer line drawing algorithm](https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm) (It's interesting: these integer
+line drawings come up everywhere: propertional share CPU scheduling,
+noise minimization, ....)
+
+
 #### Using "events" to scale the LED while doing sonar.
 
 For this step: rewrite the sonar routine to take a function pointer ---
