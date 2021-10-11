@@ -87,6 +87,17 @@ Expected tests and their results:
      reflective) you should get reasonable readings.
   3. If you come up with addition tests, please suggest them.
 
+
+Once your code works, change `libpi` to use your `gpio.c`.
+  1. Copy your `gpio.c` to `libpi/src`.
+  2. Change `SRC` in `libpi/Makefile` to be `SRC := ./src/gpio.c`.
+  3. Remove `gpio.o` from `STAFF_OBJS`.
+  4. If you `make` and rerun your sonar it should still work.
+
+Move your `hr-sr04.c` to `libpi`:
+  1. This should follow the above except you are simply adding `hr-sr04.c` to
+     `SRC` and there is nothing to delete from `STAFF_OBJS`.
+
 ----------------------------------------------------------------------
 ### Extension: use the Sonar distance to control an LED.
 
