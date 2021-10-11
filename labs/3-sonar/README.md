@@ -97,6 +97,9 @@ Once your code works, change `libpi` to use your `gpio.c`.
 Move your `hr-sr04.c` to `libpi`:
   1. This should follow the above except you are simply adding `hr-sr04.c` to
      `SRC` and there is nothing to delete from `STAFF_OBJS`.
+  2. Remove `hr-sr04.c` from today's lab `SRC` in `code/Makefile`.
+  3. Remake and rerun the lab --- it should behave the same.
+  4. Now you can easily use your sonar in later labs!
 
 ----------------------------------------------------------------------
 ### Extension: use the Sonar distance to control an LED.
