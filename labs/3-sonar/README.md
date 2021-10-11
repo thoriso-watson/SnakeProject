@@ -53,6 +53,11 @@ Second, implement three functions:
      You should look in `libpi/cs140e-src/timer.c` to see how to handle
      the case that time wraps around.
 
+NOTE:
+  - You will need to handle potential overflow in unsigned arithmetic.
+    If you look at `libpi/staff-src/timer.c:delay_usec`  you can see
+    and exmaple of how to do this.
+
 Some additional hints, you'll need to:
 
  0. Determine if any pin need to be set as `pulldown`.  If you don't 
@@ -83,7 +88,45 @@ Expected tests and their results:
   3. If you come up with addition tests, please suggest them.
 
 ----------------------------------------------------------------------
-### Extension 1: use two sonar's to more accurately estimate position.
+### Extension: use the Sonar distance to control an LED.
+
+As your distance gets closer or farther,  vary the LED brightness **smoothly**.
+I'd break it down:
+
+   1. Write the PWM code --- empirically figure out what how coarse your
+      delays can be to make the LED not flicker.
+   2. Make sure you can change the led smoothly from off to full brightness.
+   3. Hook it up to the Sonar: the trick is to make sure it doesn't make big jagged
+      changes.
+
+
+#### Scaling and LED smoothly
+
+We can very led brightness by turning it off and on --- as you it spends
+more and more time off, your eye will see this as dimmer.  This method
+is called PWM.
+
+Before you do anything with PWM, let's first make sure you can vary
+an LED smoothly.  Write code to scale it from an intensity of `0..60`
+in 1 second jumps.   You can look at a PWM duty cycle as approximating
+some ratio `p/q` and at each step deciding to turn on or off depending on
+which action minimizes the error.  For example, if you want to do a 70%
+PWM after `n` steps then turn it on if:
+
+        abs(7/10- on/n) > abs(7/10 - (on+1)/n)
+
+And leave it off otherwise.  At the moment we don't have floating point,
+so we need to multiple by `q*n` to simplify:
+
+        abs(p*n - q*on) < abs(p*n - q*(on+1))
+
+#### Using "events" to scale the LED while doing sonar.
+
+For this step: rewrite the sonar routine to take a function pointer ---
+while it is waiting for an event, it should call the function repeatedly.
+
+----------------------------------------------------------------------
+### Extension: use two sonar's to more accurately estimate position.
 
 I have not done this. It could be nonsense.
 
@@ -92,7 +135,11 @@ estimate position (just as you do with your eyes).  If you track position
 over time, you can get velocity, and predicted movement.  Try doing this!
 I'm very curious how accurate this can be made.
 
-----------------------------------------------------------------------
-### Extension 2: write a simple event system and pwm multiple LED lights.
 
-This will have some words.
+----------------------------------------------------------------------
+### Extension : write your own `gpio_pulldown` code 
+
+You'll have to use the Broadcom document. It's kind of confusing.  This
+[page](http://what-when-how.com/Tutorial/topic-334jc9v/Raspberry-Pi-Hardware-Reference-126.html)
+gives an easier to follow example.  I have a multimeter you can use to check that your
+code is right.
