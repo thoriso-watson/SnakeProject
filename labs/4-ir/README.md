@@ -99,3 +99,16 @@ to make it easier to see what is going on.
   4. Then figure out what value each key on your remote gives and implement
      `key_to_str`.
   5. There are some helper functions that hopefully are self explanatory.
+
+--------------------------------------------------------------------
+### Extension: make a simple network.
+
+We have emitters as well as receivers.  You should be able to send bits of information
+from one pi to another using them.  First try on your own pi.
+
+--------------------------------------------------------------------
+### Extension: control a light
+
+Now that you have an IR sensor, use it to control whether an LED goes more or less
+bright.  Since we don't have interrupts, you'll have to PWM the LED
+during the "wait" time in your timeout code.
