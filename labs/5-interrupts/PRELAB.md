@@ -62,7 +62,7 @@ Your implementation should do the following:
 
 When you are done:
   1. Make sure all the tests pass by running `make check`.
-  2. Copy `kmalloc.c` to `libpi/src` and update your `manifest.mk`.
+  2. Copy `kmalloc.c` to `libpi/src` and update your `Makefile`.
   3. In `0-kmalloc/Makefile` comment out 
 
             # USE_LOCAL_KMALLOC = ./kmalloc.c
