@@ -97,6 +97,18 @@ for the sonar lab, with the change that they use the cycle counter
       timing checks in `0-timing-check.c` succeed.
    2. Then implement `t1h`, `t0h`, `t1l` and `t0l` making sure each passes.
 
+
+You will need to replace `0` with the needed nanosecond in the timings in
+`WS2812B.h`:
+
+        // to send a 1: set pin high for T1H ns, then low for T0H ns.
+        T1H = ns_to_cycles(0),        // Width of a 1 bit in ns
+        T0H = ns_to_cycles(0),        // Width of a 0 bit in ns
+        // to send a 0: set pin high for T1L ns, then low for T0L ns.
+        T1L = ns_to_cycles(0),        // Width of a 1 bit in ns
+        T0L = ns_to_cycles(0),        // Width of a 0 bit in ns
+
+
 -------------------------------------------------------------------------
 ### Part 1: turn on one pixel (5 minutes)
 
