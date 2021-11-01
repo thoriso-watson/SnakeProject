@@ -13,6 +13,10 @@ RUN = 1
 # set if you want the code to automatically check after building.
 #CHECK = 0
 
+ifdef CS49N_STAFF
+STAFF_OBJS += staff-objs/kmalloc.o
+endif
+
 include $(CS49N_2021_PATH)/libpi/mk/Makefile.lib.template
 
 test:

@@ -223,6 +223,8 @@ int memcmp(const void *_s1, const void *_s2, size_t nbytes);
 void *memmove(void *dest, const void *src, size_t n);
 void *memset(void *_p, int c, size_t n);
 
+#define asm_align(x)    asm volatile (".align " _XSTRING(x))
+
 #else
 #include <string.h>
 #include <stdlib.h>
