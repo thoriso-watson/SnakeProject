@@ -36,74 +36,97 @@ The protocol to set N pixels:
 
 ### Check-in
 
-
 You'll implement several pieces of code:
 
   1. Timing routines in `code/WS2812.h`.  These should pass the timing
-     tests run by `check_timings`.   Since part of this class is learning
-     to use datasheets, *please* only use the datasheet we have (in
-     `doc/`) and the comments in the given code, don't use blog posts,
-     etc.
+     tests run by `0-timing-check`.   Since part of this class is
+     learning to use datasheets, *please* only use the datasheet we have
+     (in `doc/`) and the comments in the given code, don't use blog
+     posts, etc.
 
   2. The simple interface in `neopixel.c` which
      wraps the code you wrote in (1) into a simple interface.  Optimize
      the timings as far as you can and have the code still work.
+     The program `2-neopix.c` should work as expected.
 
-  3. Do something novel/cute with the light using your interface.
+  3. Do something novel/cute with the light using your interface.   For example,
+     hook it up to your sonar.
 
-###  Part 0: hook up your hardware.
+-------------------------------------------------------------------------
+### Timing weirdness.
 
-To hook up the light string:
-   1. Strip the red (power) and white (ground) wires and connect them
-      to the 3.3v power and ground of the pi.  Unfortunately I didn't realize these
-      were stranded wire, so you will have to (sadly) also strip some jumper cables and
-      twist-connect them.
-   2. Hook the pi's 3.3v and ground up to the female connectors on the light strip as well,
-      using male-to-male to go to your breadboard.
-   3. Hook up the green (signal) wire to pin 21.
-   4. Bootload the programs in the lab's `bin/` and make sure they do something. 
+We care about nanosecond timings.  At this level, small changes in code
+can lead to noticeable impacts.  One confusing timing bug we had for
+awhile was related to instruction alignment --- a timed block of code
+that was 16 byte aligned took less time than a non-16-byte aligned block.
+If you run the code in `weird-timings` you can verify this yourself.
+
+-------------------------------------------------------------------------
+###  First step: hook up your hardware.
+
+I went through and soldered / shrink wrapped / tested the neopixels
+last night.  Hopefully, they are still in working order when you get them.
+
+To hook up the light strings, the female wires should be:
+  - Red for power: 3v only!
+  - Green or black for ground.
+  - White for signal (GPIO pin 21).
+
+Bootload the `staff-binaries/2-neopix.bin` and make sure it sends some
+pixels around the light strip.
 
 Note: A confusing thing is that the power for the WS2812B must be pretty
 close to the power used to drive the data pin.  For long light strings
 you'd want to power them with a external power supply --- however this
 will require you either use a "level shifter" to raise the power used
-by the pi to signal (since its pins are 3.3v for output) or a transitor
+by the pi to signal (since its pins are 3.3v for output) or a transistor
 to connect/disconnect the pi 5v to the signal wire of the LED.
 
-### Part 1: implement the timing routines  (30 minutes)
+-------------------------------------------------------------------------
+### Part 0: implement the timing routines  (30 minutes)
 
 The header `code/WS2812b.h` defines routines to call to write a 0, write a 1,
 write a pixel to the light array.  It also defines timing constants.
-You should fill theese in using the datasheet and comments.  When you
-are done, they should pass the timing checks called by `code/simple.c`.
+You should fill thees in using the datasheet and comments.  When you
+are done, they should pass the timing checks called by `code/0-timing-check.c`.
 
-These routines will look similar to the other timing routines you've
-already built (as will most of any other timing routines you build).
+These routines will look similar to the timing routines you built
+for the sonar lab, with the change that they use the cycle counter
+(`cycle_cnt_read()`) rather than the microsecond timer.  
+   1. First implement `delay_ncycles` (`WS2812B.h`) and make sure the initial 
+      timing checks in `0-timing-check.c` succeed.
+   2. Then implement `t1h`, `t0h`, `t1l` and `t0l` making sure each passes.
 
-To make it more interesting:
-  1. Trim as many nanoseconds off of the timings as possible and see that the 
-     code below still works.
-  2. Double-check the timings using your scope.
-
-### Part 2: turn on one pixel (5 minutes)
+-------------------------------------------------------------------------
+### Part 1: turn on one pixel (5 minutes)
 
 As a "hello world" you should call your code to turn on one pixel to
-a specific color.  Change the code in `simple.c` to turn on different
-colors and different pixels.
+a specific color.  Make sure `1-blink.c` works with your code and then
+test your understanding by changing it to turn on different colors and
+different pixels.
 
-### Part 3: build the neopixel inferface (20 minutes)
+-------------------------------------------------------------------------
+### Part 3: build the neopixel interface (20 minutes)
 
 The files `neopixel.h` and `neopixel.c` define some trivial routines to add
 buffering the a light string.  Finish implementing these (should be fast)
-and verify the supplied cursor routine in `simple.c` does something.
+and verify the supplied cursor routine in `2-neopix.c` does something.
 
-
+-------------------------------------------------------------------------
 ### Part 4: do something cute with the interface.
 
 A lot of people have gotten a lot of free trips and other things because
 they were able to do tricks with light strips.   Try to come up with
 something cute using you code.
 
+-------------------------------------------------------------------------
+### Extensions
+
+To make it more interesting:
+  1. Trim as many nanoseconds off of the timings as possible and see that the 
+     code still works.
+
+-------------------------------------------------------------------------
 #### Additional reading.
 
 Some useful documents:

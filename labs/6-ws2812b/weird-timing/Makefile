@@ -1,5 +1,5 @@
 # list out the driver program source 
-TEST_SRC = simple.c
+TEST_SRC = example.c
 
 # define this if you need to give the device for your pi
 TTYUSB = 
