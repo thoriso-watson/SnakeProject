@@ -109,6 +109,9 @@ You will need to replace `0` with the needed nanosecond in the timings in
         T0L = ns_to_cycles(0),        // Width of a 0 bit in ns
 
 
+You will also need to implement inlined versions of your `gpio_set_on`
+and `gpio_set_off` (also defined in `WS2812B.h`).
+
 -------------------------------------------------------------------------
 ### Part 1: turn on one pixel (5 minutes)
 

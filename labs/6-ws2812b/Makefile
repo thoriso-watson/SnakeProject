@@ -1,4 +1,4 @@
-SUBDIRS=  weird-timing
+SUBDIRS=  weird-timing code
 
 .PHONY: all check clean
 all check clean: $(SUBDIRS)
