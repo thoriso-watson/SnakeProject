@@ -39,4 +39,12 @@ fn_name:
 #define SYS_MODE        0b11111
 
 
+// 1.4285714285714286 nanosecond per cycle: we don't have fp so
+// use 142857 and then divide by 100000
+// 
+#define cycles_to_nanosec(c) (((c) * 142857UL) / 100000UL)
+
+// if we overclock, will have to change this stuff.
+#define usec_to_cycles(usec) ((usec) * CYC_PER_USEC)
+
 #endif
