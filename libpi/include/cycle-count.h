@@ -1,4 +1,5 @@
 #ifndef __CYCLE_COUNT_H__
+#define __CYCLE_COUNT_H__
 // use r/pi cycle counters so that we can do tighter timings.
 
 #ifndef RPI_UNIX
@@ -20,25 +21,6 @@ void cycle_cnt_init(void);
 unsigned cycle_cnt_read(void);
 
 #endif
-
-// some helper macros to make measuring the cycle count of
-// different operations easier.
-
-#if 0
-
-// 1.4285714285714286 nanosecond per cycle: we don't have fp so
-// use 142857 and then divide by 100000
-// 
-#define cycles_to_nanosec(c) (((c) * 142857UL) / 100000UL)
-
-static inline uint32_t usec_to_cycles(uint32_t usec) {
-    // shouldn't be asked for times > 1 second.
-    assert(usec < 1000*1000);
-    return usec * CYC_PER_USEC;
-}
-#endif
-
-
 
 //
 // XXX need to investigate more --- without the barrier it appears
