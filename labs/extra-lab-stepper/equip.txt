@@ -1,0 +1,7 @@
+stepper h-bridge
+
+https://www.amazon.com/BIQU-Compatible-Stepper-StepStick-Controller/dp/B01FFGAKK8
+
+motor:
+
+https://www.amazon.com/Adafruit-PID-324-Stepper-motor/dp/B01N30ISYC/ref=sr_1_2?dchild=1&keywords=stepper+motor&qid=1587502618&s=electronics&sr=1-2
