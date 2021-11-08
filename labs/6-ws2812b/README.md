@@ -18,7 +18,7 @@ The WS2812B's use a crude variant of this.
 
 The WS2812B protocol to send a bit of information:
   1. To send a `1` bit: write a `1` for `T1H` nanoseconds (defined in datasheet), then a `0`
-     for T1L nanoseconds.
+     for T0L nanoseconds.
   2. To send a `0` bit: write a `1` for `T0H` nanoseconds, then a `0` for `T0L` nanoseconds.
   3. To send a byte: send the 7th bit (as above), the 6th, the 5th...
   4. The timings are fairly tight.  The datasheet states +/- 150 nanoseconds.  Thus
@@ -101,10 +101,10 @@ for the sonar lab, with the change that they use the cycle counter
 For `t1h`, `t0h`, `t1l` and `t0l` you will need to replace `0` with the
 needed nanosecond in the timings in `WS2812B.h`:
 
-        // to send a 1: set pin high for T1H ns, then low for T0H ns.
+        // to send a 1: set pin high for T1H ns, then low for T1L ns.
         T1H = ns_to_cycles(0),        // Width of a 1 bit in ns
         T0H = ns_to_cycles(0),        // Width of a 0 bit in ns
-        // to send a 0: set pin high for T1L ns, then low for T0L ns.
+        // to send a 0: set pin high for T0H ns, then low for T0L ns.
         T1L = ns_to_cycles(0),        // Width of a 1 bit in ns
         T0L = ns_to_cycles(0),        // Width of a 0 bit in ns
 
