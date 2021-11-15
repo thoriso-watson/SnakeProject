@@ -73,6 +73,28 @@ For this part:
      second and a +/- 4v range.
   3. Make sure your readings make sense.
 
+
+The I2C model has similarities to our use of `GET` (`i2c_read`) and `PUT`
+(`i2c_write`) --- each call takes an 8-bit `address` (i2c calls these
+register addreses, but they don't have to literally be registers on
+the device) and  either sets it to a given value (`PUT`) or gets the
+existing value (as with `GET`).  There is an I2C driver checked in,
+so you don't have to write your own --- however, if you're looking for
+an interesting extension, doing so is fun!
+
+
+So your workflow should be:
+  1. Look up the different register names in the document (p 27).
+  2. Look up their format.
+  3. Use i2c calls to set and get them.  (see `code/i2c.h` for the routines you
+     can call).  Just as with GPIO: pay attention to when you need to preserve
+     old values or not.  The i2c routines take an array of unsigned bytes, where the
+     first element is the 8-bit register number and (if you are doing a write) the
+     next two bytes are the high 8-bits and then the low 8-bits of the 16-bit 
+     value being set.  A bit confusingly: for an `i2c_read`, the high byte of the
+     result is returned in the low byte (`data[0]`), and the high byte in the 
+     high byte (`data[1]`).
+
 This shouldn't take that long.  And having an ADC is super useful ---
 there's a huge number of cheap analogue sensors and devices you can
 now use.
@@ -83,6 +105,13 @@ now use.
 We have both microphones (`docs/max4466-ebay.pdf`) and temperature sensors
 in class.  You should get one, download the datasheet, and get make sure
 you get some sensible data.
+
+---------------------------------------------------------------------------
+### Exension: use the alert pin to detect when a reading is available.
+
+There is an alert pin on the adc that indicates when there is data (see page
+19 and related of the datasheet).  Use this to detect you can read, and verify
+that the rate you observe makes sense.
 
 ---------------------------------------------------------------------------
 ### Exension: hook your light strip up to the microphone output.
