@@ -49,9 +49,11 @@ Next hook up your ADC to the breadboard as well, with:
   - `v` to 3v.
   - the two i2c pins: `sda` and `scl`.
 
-<table><tr><td>
-  <img src="images/pot-adc.jpg"/>
-</td></tr></table>
+
+<p float="left">
+  <img src="images/pot-adc.jpg" width="300" />
+  <img src="images/rpi-adc.jpg" width="300" />
+</p>
 
 You should be able to run the `staff-binary/ads1115.bin` and get output.
 
@@ -62,9 +64,10 @@ We want to known signal to check your i2c.  Using the i2c makes this
 relatively easy.  It also re-enforces that after awhile, datasheets
 look very similar and they often aren't that bad.
 
-This code will closely mirror your last lab.  To save time, the 
-starter code has some (but not all) page numbers.  There's
-an annotated datasheet in `./docs/ads1114.annoted.pdf`).
+This code will closely mirror your last lab.  To save time, the starter
+code has some (but not all) page numbers.  There's an annotated datasheet
+in `./docs/ads1114.annoted.pdf`).  It's 56 pages(!)  but you only need
+a few parts (they should all be highlighted in red).
 
 For this part:
   1. Implement `adc_write16` and `adc_read16` to read and write the 
@@ -81,7 +84,6 @@ the device) and  either sets it to a given value (`PUT`) or gets the
 existing value (as with `GET`).  There is an I2C driver checked in,
 so you don't have to write your own --- however, if you're looking for
 an interesting extension, doing so is fun!
-
 
 So your workflow should be:
   1. Look up the different register names in the document (p 27).
