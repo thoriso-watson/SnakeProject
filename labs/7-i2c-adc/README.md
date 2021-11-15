@@ -90,11 +90,23 @@ So your workflow should be:
   2. Look up their format.
   3. Use i2c calls to set and get them.  (see `code/i2c.h` for the routines you
      can call).  Just as with GPIO: pay attention to when you need to preserve
-     old values or not.  The i2c routines take an array of unsigned bytes, where the
-     first element is the 8-bit register number and (if you are doing a write) the
-     next two bytes are the high 8-bits and then the low 8-bits of the 16-bit 
-     value being set.  A bit confusingly: for an `i2c_read`, the high byte of the
-     result is returned in the low byte (`data[0]`), and the high byte in the 
+     old values or not.  
+
+     The i2c routines take an array of unsigned bytes, where the first
+     element is the 8-bit register number and (if you are doing a write)
+     the next two bytes are the high 8-bits and then the low 8-bits of
+     the 16-bit value being set.  
+
+     The main weird aspect of I2C: rather than include the register
+     number in the `i2c_read` command as you would expect, you instead
+     first *write* the register number using `i2c_write`  (e.g.,
+     `i2c_write(dev_addr, &reg, 1)`,  where `reg` holds the 8-bit register
+     name and `dev_addr` the device address) and *then* do an I2c read
+     of two bytes (eg., `i2c_read(dev_addr, data, 2)` where data is a
+     two byte array).
+
+     A bit confusingly: for an `i2c_read`, the high byte of the result
+     is returned in the low byte (`data[0]`), and the high byte in the
      high byte (`data[1]`).
 
      The "quickstart" guide on p 35 gives an example.
