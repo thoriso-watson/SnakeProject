@@ -17,7 +17,8 @@ You're going to do two things:
      This will give us a way to get a known signal and see that you 
      are correct.
 
-  2. Use it to get the reading from a potentiometer.
+  2. Use it to get the reading from a potentiometer.  At the lowest setting
+     it should be around 1, at the highest around 16k.
 
   3. Extension: add a microphone or temperature input readings.  
 
@@ -46,10 +47,13 @@ Next hook up your ADC to the breadboard as well, with:
   - `a0` connected to the middle of the potentiometer (and LED).
   - `g` to ground
   - `v` to 3v.
+  - the two i2c pins: `sda` and `scl`.
 
 <table><tr><td>
   <img src="images/pot-adc.jpg"/>
 </td></tr></table>
+
+You should be able to run the `staff-binary/ads1115.bin` and get output.
 
 ---------------------------------------------------------------------------
 ### Part 1: write the i2c driver for the adc
