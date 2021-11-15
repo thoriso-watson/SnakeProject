@@ -95,6 +95,8 @@ So your workflow should be:
      result is returned in the low byte (`data[0]`), and the high byte in the 
      high byte (`data[1]`).
 
+     The "quickstart" guide on p 35 gives an example.
+
 This shouldn't take that long.  And having an ADC is super useful ---
 there's a huge number of cheap analogue sensors and devices you can
 now use.
