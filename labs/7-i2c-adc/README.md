@@ -118,6 +118,27 @@ This shouldn't take that long.  And having an ADC is super useful ---
 there's a huge number of cheap analogue sensors and devices you can
 now use.
 
+
+If you need help debugging, here's a useful routine that will 
+pretty print your configuration register:
+
+        // print config
+        void ads1115_print(const char *msg, uint32_t c) {
+            printk("<%s> config:\n", msg);
+            printk("\tOS[15]=%b\n", bit_get(c,15));
+            printk("\tMUX[12:14]=%b\n", bits_get(c,12,14));
+            printk("\tPGA[9:11]=%b\n", bits_get(c,9,11));
+            printk("\tMODE[8]=%b\n", bit_get(c,8));
+            printk("\tDR[5:7]=%b\n", bits_get(c,5,7));
+            printk("\tCOMP_MODE[4]=%b\n", bit_get(c,4));
+            printk("\tCOMP_POL[3]=%b\n", bit_get(c,3));
+            printk("\tCOMP_LAT[2]=%b\n", bit_get(c,2));
+            printk("\tCOMP_Q[0:1]=%b\n", bits_get(c,0,1));
+        }
+
+
+
+
 ---------------------------------------------------------------------------
 ### Part 2: use your adc to decode readings from a mic or temperature sensor 
 
