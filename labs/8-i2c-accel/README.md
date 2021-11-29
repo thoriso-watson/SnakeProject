@@ -8,6 +8,8 @@ on motion.
 
 The `docs` directory has a bunch of documents.
 
+[A nice clear SPARKFUN tutorial on gyros](https://learn.sparkfun.com/tutorials/gyroscope/all).
+
 ---------------------------------------------------------------------------
 ### Part1: fill in the accelerometer code in the code directory.
 
